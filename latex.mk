@@ -6,7 +6,8 @@ main.pdf: main.aux $(maindeps)
 main.aux: main.tex
 	$(LATEX) main
 
-TRASH += *~ main.aux main.log main.out main.pdf
+TRASH += *~ main.aux main.bbl main.blg \
+			main.log main.out main.pdf
 
 clean:
 	$(RM) $(TRASH)
