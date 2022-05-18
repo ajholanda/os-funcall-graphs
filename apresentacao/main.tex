@@ -1,0 +1,339 @@
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
+
+%% to generate notes
+%\documentclass[]{article}
+%\usepackage{beamerarticle}
+
+\documentclass[ignorenonframetext]{beamer}
+\usetheme{default}
+\usefonttheme{serif}
+
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tikz}
+
+\def\vertex{vértice}
+\def\vertices{vértices}
+\def\oslist{GNU$/$Linux}
+\def\graphdef{Graph Definition}
+
+\begin{document}
+
+\begin{frame}
+\title{CNAOS}
+\author{Adriano J. Holanda}
+\maketitle
+\end{frame}
+
+\section{Introdução}
+\label{sec:intro}
+
+\begin{frame}[plain]
+\title{\LARGE Introdução}
+\author{}
+\date{\empty}
+\maketitle
+\end{frame}
+
+
+\begin{frame}
+\includegraphics[width=\textwidth]{img/thesaurus_paper_header}
+\end{frame}
+
+\begin{frame}
+\includegraphics[width=\textwidth]{img/thesaurus_paper_fig1}
+\end{frame}
+
+\begin{frame}
+\includegraphics[width=\textwidth]{img/thesaurus_paper_fig2}
+\end{frame}
+
+% \begin{frame}
+% \includegraphics[width=\textwidth]{img/thesaurus_paper_fig3}
+% \end{frame}
+
+% \begin{frame}
+% \includegraphics[width=\textwidth]{img/thesaurus_paper_fig4}
+% \end{frame}
+
+
+ \begin{frame}
+ \includegraphics[width=\textwidth]{img/culinary_paper_header}
+ \end{frame}
+
+% \begin{frame}
+% \includegraphics[width=\textwidth]{img/culinary_paper_tab1}
+% \end{frame}
+
+\begin{frame}
+\includegraphics[width=\textwidth]{img/culinary_paper_fig1}
+\end{frame}
+
+% \begin{frame}
+% \includegraphics[width=\textwidth]{img/culinary_paper_fig2}
+% \end{frame}
+
+\section{Objetivo}
+
+\begin{frame}{Objetivo}
+
+\begin{itemize}
+\item Analisar as relações nas
+redes formadas pelo conjunto de objetos funcionais (funções) que
+compõem alguns sistemas operacionais, tendo como parâmetros principais
+: 
+\begin{enumerate}
+\item A distribuição
+dos graus; 
+\item Centralidade dos \vertex{}s;
+\item Índice de agrupamento.
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\section{Metodologia}
+
+\begin{frame}[plain]
+
+\title{\LARGE Metodologia}
+\author{}
+\date{\empty}
+\maketitle
+\end{frame}
+
+\subsection{Conjunto de dados}
+
+\begin{frame}{Conjunto de dados}
+\begin{block}{Lista:}
+\oslist
+\end{block}
+
+\begin{block}{Justificativa:}
+\begin{itemize}
+\item Acesso ao código fonte;
+\item Utilização em larga escala ({\footnotesize GNU/Linux, FreeBSD, NetBSD});
+\item Arquitetura baseada em micronúcleo ({\footnotesize Minix3}).
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Formação do grafo}
+\small
+
+\graphdef
+
+\hrule
+\bigskip
+\begin{columns}
+\begin{column}{0.25\textwidth}
+programa.c
+\begin{verbatim}
+void a() {
+     b();
+     c();
+}
+int b() {
+    d();
+    return 0;
+}
+void c() {
+     b();
+}
+void d();
+\end{verbatim}
+\end{column}
+{\LARGE $\Rightarrow$}\hspace{0.25cm}
+\begin{column}{0.45\textwidth}
+
+  \begin{tikzpicture}[mynode/.style={circle,draw},myedge/.style={->,>=latex}]
+    \node[mynode] (a) {\scriptsize\tt a()};
+    \node[mynode] (b) {\scriptsize\tt b()};
+    \node[mynode] (c) {\scriptsize\tt c()};
+    \node[mynode] (d) {\scriptsize\tt d()};
+    \draw[myedge] (a) -- (b);
+    \draw[myedge] (a) -- (c);
+    \draw[myedge] (c) -- (d);
+  \end{tikzpicture}
+
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+
+\graphdef
+
+\begin{block}{Exemplo -- parte código do escalonador ({\tt sched.c}) do GNU/Linux}
+  \input{img/function}
+\end{block}
+
+\end{frame}
+
+\section{Medidas}
+
+\begin{frame}{Medidas a serem realizadas}
+
+\begin{block}{Medidas}
+\begin{itemize}
+  \item Distribuição dos graus dos \vertices{};
+  \item Centralidade;
+  \item Agrupamento.
+ \end{itemize}
+\end{block}
+\end{frame}
+
+\subsubsection{Distribuição do grau}
+
+\begin{frame}{Distribuição dos graus dos nós}
+\small
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{block}{Grau de saída}
+Número de arcos divergentes do \vertex.\\
+\kouteq
+\kavgouteq
+\end{block}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{block}{Grau de entrada}
+Número de arcos convergentes ao \vertex.\\
+\kineq
+\kavgineq
+\end{block}
+\end{column}
+\end{columns}
+
+\begin{block}{Grau médio total}
+\kavgeq
+\end{block}
+
+
+\end{frame}
+
+\begin{frame}{Probabilidade}
+\probeq
+\includegraphics[width=\textwidth]{img/prob_dist-culinary}
+\cite{kinouchi}
+\end{frame}
+
+\subsubsection{Centralidade}
+
+\begin{frame}{Centralidade}
+
+\begin{block}{Grau}
+\degcentreq
+\end{block}
+\begin{block}{Intermediação ({\em betweeness})}
+\betcentreq
+\noindent onde $\sigma$ -- número de caminhos geodésicos.
+\end{block}
+\begin{block}{Proximidade ({\em closeness})}
+\closecentreq
+\noindent onde $d_G$ -- distância geodésica.
+\end{block}
+
+\end{frame}
+
+\begin{frame}{Índice de agrupamento}
+\begin{columns}
+\begin{column}{0.65\textwidth}
+\footnotesize
+\begin{block}{Triângulo}
+\only<1>{
+\[\delta(v) = 
+\begin{cases}
+1 &if\ \exists \{u,v\} \in E : \{v,w\}\in E \land \{w,u\} \in E\\
+0 & caso\ contr\acute{a}rio
+\end{cases}
+\]
+}
+$\delta(G) = 1\slash 3 \sum_{v\in V}\delta(v)$\\
+\includegraphics[scale=0.5]{img/triangle}
+\end{block}
+\end{column}
+
+\begin{column}{0.45\textwidth}
+\only<2->{
+\begin{block}{Tripla}
+$\tau(v) = {deg(v)\choose 2}$
+$\tau(G) = \sum_{v\in V}\tau(v)$
+
+\includegraphics[scale=0.45]{img/triple}
+\end{block}
+}
+\end{column}
+
+\end{columns}
+\only<3>{
+\begin{block}{Índice de agrupamento}
+$\langle c(v) \rangle = \delta(v)\slash \tau(v)$ \hspace{0.5cm}\\
+$\langle c(G) \rangle = \sum_{v\in V^\prime}\delta(v)\slash \tau(v)$\\
+\noindent {\footnotesize $V^\prime$ -- conjunto de \vertex{}s com ${deg(v) \geq 2}$}.
+\end{block}
+}
+\end{frame}
+
+\begin{frame}{Análise dos resultados}
+
+\begin{block}{Implicações}
+\begin{itemize}
+\item Distribuição cumulativa $\Rightarrow$ {\em fitting} das curvas,
+análise comparativa entre os conjuntos do melhor {\em fitting};
+\item Centralidade $\Rightarrow$ análise comparativa das funções no
+conjunto de dados de cada sistema;
+\item Índice de agrupamento $\Rightarrow$ existência de ciclos e grau de espalhamento.
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\section{Subprojetos}
+\label{sec:subprojs}
+
+\begin{frame}{Subprojetos}
+\begin{block}{Enfoque}
+\begin{enumerate}
+\item \time\label{subproj:time} $\rightarrow$ GNU/Linux v1.0, v1.1,
+v1.2, v1.3, v2.0, v2.1, v2.2, v2.3, v2.4, v2.5 e v2.6;
+\item \projeto\label{subproj:projeto} $\rightarrow$ FreeBSD, GNU/Linux
+e NetBSD;
+\item \arquitetura\label{subproj:architecture} $\rightarrow$ sistemas
+item~\ref{subproj:projeto} (monolíticos) e Minix3 (baseado em micronúcleo).
+\end{enumerate}
+\end{block}
+
+\begin{block}{Cronograma}
+\begin{center}
+\begin{tabular}[h]{cc}\hline\hline
+{\bf Ano} & {\bf Subprojeto} \\\hline
+2011 -- 2013  & \ref{subproj:time} \\
+2013 -- 2015 & \ref{subproj:projeto}\\
+2016, 2017   & \ref{subproj:architecture}\\\hline\hline
+\end{tabular}
+\end{center}
+\end{block}
+\end{frame}
+
+\begin{frame}{Referências}
+\begin{thebibliography}{4}
+
+\bibitem{holanda}[Holanda, 2004]
+Adriano J. Holanda {\em et al.}
+\newblock Physica A v. 344, 2004.
+
+\bibitem{kinouchi}[Knouchi, 2008]
+Osame Kinouchi {\em et al.}
+\newblock New J. Phys. n. 7, 2008.
+\end{thebibliography}
+\end{frame}
+
+\end{document}
